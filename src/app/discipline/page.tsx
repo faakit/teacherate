@@ -8,6 +8,7 @@ export default function Discipline() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<any>();
 
@@ -22,15 +23,7 @@ export default function Discipline() {
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">
       <h1 className="text-4xl font-bold text-center">Cadastro de disciplina</h1>
       <form className="flex flex-col items-center justify-center gap-3" onSubmit={handleSubmit(onSubmit)}>
-        <Select
-          className="w-full"
-          errors={errors}
-          label="Disciplina"
-          name="teacherId"
-          options={selectOptions}
-          register={register}
-          required
-        />
+        <Select label="Disciplina" name="teacherId" options={selectOptions} control={control} required />
         <a
           className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-100"
           href="/course"

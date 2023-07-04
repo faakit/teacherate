@@ -1,7 +1,7 @@
 import { courseFormSchema } from '@/app/course/schema';
 import prisma from '@/lib/prisma';
 import { apiErrorHandler } from '@/utils/apiErrorHandler';
-import { badRequest, created } from '@/utils/nextResponse';
+import { badRequest, created, ok } from '@/utils/nextResponse';
 
 export async function POST(req: Request) {
   try {
@@ -27,6 +27,30 @@ export async function POST(req: Request) {
     });
 
     return created(course, 'course');
+  } catch (error) {
+    return apiErrorHandler(error);
+  }
+}
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const name = searchParams.get('name') || '';
+
+    const courses = await prisma.course.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+      take: 10,
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    return ok(courses, 'courses');
   } catch (error) {
     return apiErrorHandler(error);
   }

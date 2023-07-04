@@ -4,14 +4,15 @@ import { handleApiError } from '@/utils/handleApiError';
 import { notify } from '@/utils/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CourseForm, courseFormSchema } from './schema';
 
 export default function Course() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<CourseForm>({ resolver: yupResolver(courseFormSchema) });
 
@@ -22,6 +23,7 @@ export default function Course() {
     } catch (error) {
       handleApiError(error);
     }
+    router.push('/discipline');
   };
 
   return (

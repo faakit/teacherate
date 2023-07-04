@@ -30,7 +30,7 @@ export const Input = ({
       <label htmlFor={name}>{label}</label>
       <InputType
         id={name}
-        className="border border-gray-400 rounded-md p-2"
+        className="border border-gray-300 rounded-md p-2 focus-visible:outline-0 focus-visible:ring-2 focus-visible:ring-blue-500"
         {...register(name, { required })}
         {...rest}
       />
