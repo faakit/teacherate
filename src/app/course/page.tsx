@@ -1,9 +1,9 @@
 'use client';
 import { Input } from '@/components/Input';
+import { createCourse } from '@/services/courses';
 import { handleApiError } from '@/utils/handleApiError';
 import { notify } from '@/utils/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CourseForm, courseFormSchema } from './schema';
@@ -18,7 +18,7 @@ export default function Course() {
 
   const onSubmit: SubmitHandler<CourseForm> = async data => {
     try {
-      await axios.post('/api/courses', data);
+      await createCourse(data.name);
       notify.success('Curso cadastrado com sucesso!');
     } catch (error) {
       handleApiError(error);

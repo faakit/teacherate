@@ -1,3 +1,4 @@
+'use client';
 import React, { ChangeEvent } from 'react';
 import { Control, FieldError, FieldValues, Path, useController } from 'react-hook-form';
 import {
@@ -90,7 +91,7 @@ export const Select = <T extends Record<string, unknown>, Fields extends FieldVa
   }, [showValue, field.value, options, defaultOptions, valueAs]);
 
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div className={`flex flex-col w-full ${className}`}>
       {!!label && typeof label === 'string' ? (
         <label className="input-label">
           {required && <span className="mt-2 text-red-500">*</span>}
