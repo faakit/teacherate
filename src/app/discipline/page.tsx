@@ -1,20 +1,17 @@
 'use client';
 import { Input } from '@/components/Input';
 import { Select } from '@/components/Select';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { FeedbackForm, feedbackFormSchema } from './schema';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-export default function Feedback() {
+export default function Discipline() {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FeedbackForm>({
-    resolver: feedbackFormSchema,
-  });
+  } = useForm<any>();
 
-  const onSubmit: SubmitHandler<FeedbackForm> = data => console.log(data);
+  const onSubmit: SubmitHandler<any> = data => console.log(data);
 
   const selectOptions = [
     { label: 'Bug', value: 1 },
@@ -23,12 +20,12 @@ export default function Feedback() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">
-      <h1 className="text-4xl font-bold text-center">Cadastro de feedback</h1>
+      <h1 className="text-4xl font-bold text-center">Cadastro de disciplina</h1>
       <form className="flex flex-col items-center justify-center gap-3" onSubmit={handleSubmit(onSubmit)}>
         <Select
           className="w-full"
           errors={errors}
-          label="Docente"
+          label="Disciplina"
           name="teacherId"
           options={selectOptions}
           register={register}
@@ -36,9 +33,9 @@ export default function Feedback() {
         />
         <a
           className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-100"
-          href="/teacher"
+          href="/course"
           target="_blank">
-          Não encontrou o docente? <br />
+          Não encontrou o curso? <br />
           Cadastre aqui
         </a>
         <Input

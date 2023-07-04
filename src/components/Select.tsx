@@ -1,39 +1,41 @@
-type InputProps = {
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+
+type SelectProps = {
   label: string;
   name: string;
-  register: any;
+  register: UseFormRegister<any>;
   required?: boolean;
-  errors: any;
-  type?: 'text' | 'number' | 'textarea';
+  errors: FieldErrors;
+  options: { label: string; value: string | number }[];
   className?: string;
   [key: string]: any;
 };
 
-export const Input = ({
+export const Select = ({
   label,
   name,
   register,
   required,
   errors,
-  type = 'text',
+  options,
   className,
   ...rest
-}: InputProps) => {
-  const InputType = type === 'textarea' ? 'textarea' : 'input';
-
-  if (type === 'number') {
-    rest.type = 'number';
-  }
-
+}: SelectProps) => {
   return (
     <div className={`flex flex-col ${className}`}>
       <label htmlFor={name}>{label}</label>
-      <InputType
+      <select
         id={name}
         className="border border-gray-400 rounded-md p-2"
         {...register(name, { required })}
-        {...rest}
-      />
+        {...rest}>
+        <option>Selecione um docente</option>
+        {options.map((option, i) => (
+          <option key={i} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
       {errors[name]?.message && <span className="text-red-500">{errors[name]?.message as string}</span>}
     </div>
   );
