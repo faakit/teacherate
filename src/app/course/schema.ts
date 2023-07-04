@@ -10,5 +10,6 @@ export const courseFormSchema = yup.object().shape({
     .string()
     .typeError(yupSchemaTexts.string)
     .required(yupSchemaTexts.required)
-    .max(255, yupSchemaTexts.max(255)),
+    .max(255, yupSchemaTexts.max(255))
+    .trim(),
 });

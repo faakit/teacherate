@@ -1,29 +1,33 @@
 import { courseFormSchema } from '@/app/course/schema';
 import prisma from '@/lib/prisma';
+import { apiErrorHandler } from '@/utils/apiErrorHandler';
 import { badRequest, created } from '@/utils/nextResponse';
 
-type reqBody = {
-  name: string;
-};
-
 export async function POST(req: Request) {
-  const { name } = await courseFormSchema.validate(await req.json());
+  try {
+    const { name } = await courseFormSchema.validate(await req.json());
 
-  const exists = await prisma.course.findFirst({
-    where: {
-      name,
-    },
-  });
+    const exists = await prisma.course.findFirst({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+    });
 
-  if (exists) {
-    return badRequest('Curso já cadastrado');
+    if (exists) {
+      return badRequest('Curso já cadastrado');
+    }
+
+    const course = await prisma.course.create({
+      data: {
+        name,
+      },
+    });
+
+    return created(course, 'course');
+  } catch (error) {
+    return apiErrorHandler(error);
   }
-
-  const course = await prisma.course.create({
-    data: {
-      name,
-    },
-  });
-
-  return created(course, 'course');
 }
