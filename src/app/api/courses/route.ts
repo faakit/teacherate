@@ -1,3 +1,4 @@
+import { courseFormSchema } from '@/app/course/schema';
 import prisma from '@/lib/prisma';
 import { badRequest, created } from '@/utils/nextResponse';
 
@@ -6,7 +7,7 @@ type reqBody = {
 };
 
 export async function POST(req: Request) {
-  const { name } = (await req.json()) as reqBody;
+  const { name } = await courseFormSchema.validate(await req.json());
 
   const exists = await prisma.course.findFirst({
     where: {

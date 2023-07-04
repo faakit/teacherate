@@ -1,5 +1,9 @@
 'use client';
 import { Input } from '@/components/Input';
+import { handleApiError } from '@/utils/handleApiError';
+import { notify } from '@/utils/toast';
+import { yupResolver } from '@hookform/resolvers/yup';
+import axios from 'axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CourseForm, courseFormSchema } from './schema';
 
@@ -9,9 +13,16 @@ export default function Course() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<CourseForm>({ resolver: courseFormSchema });
+  } = useForm<CourseForm>({ resolver: yupResolver(courseFormSchema) });
 
-  const onSubmit: SubmitHandler<CourseForm> = data => console.log(data);
+  const onSubmit: SubmitHandler<CourseForm> = async data => {
+    try {
+      await axios.post('/api/courses', data);
+      notify.success('Curso cadastrado com sucesso!');
+    } catch (error) {
+      handleApiError(error);
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">
