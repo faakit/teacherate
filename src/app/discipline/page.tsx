@@ -5,6 +5,7 @@ import { ICourse } from '@/interfaces/ICourse';
 import { getCourses } from '@/services/courses';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { DisciplineForm } from './schema';
 
 export default function Discipline() {
   const [courses, setCourses] = React.useState<ICourse[]>([]);
@@ -14,9 +15,9 @@ export default function Discipline() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<any>();
+  } = useForm<DisciplineForm>();
 
-  const onSubmit: SubmitHandler<any> = data => console.log(data);
+  const onSubmit: SubmitHandler<DisciplineForm> = data => console.log(data);
 
   const onFetchCourses = async (name: string) => {
     const fetchedCourses = await getCourses(name);
@@ -29,8 +30,8 @@ export default function Discipline() {
       <h1 className="text-4xl font-bold text-center">Cadastro de disciplina</h1>
       <form className="flex flex-col items-center justify-center gap-3" onSubmit={handleSubmit(onSubmit)}>
         <Select
-          label="Disciplina"
-          name="teacherId"
+          label="Curso"
+          name="courseId"
           options={courses as any}
           control={control}
           valueAs="id"
