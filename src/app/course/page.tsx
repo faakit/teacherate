@@ -11,7 +11,7 @@ import { CourseForm, courseFormSchema } from './schema';
 export default function Course() {
   const router = useRouter();
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<CourseForm>({ resolver: yupResolver(courseFormSchema) });
@@ -35,7 +35,7 @@ export default function Course() {
           errors={errors}
           label="Nome do curso"
           name="name"
-          register={register}
+          control={control}
           required
         />
         <button

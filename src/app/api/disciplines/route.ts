@@ -1,13 +1,13 @@
-import { courseFormSchema } from '@/app/course/schema';
+import { disciplineFormSchema } from '@/app/discipline/schema';
 import prisma from '@/lib/prisma';
 import { apiErrorHandler } from '@/utils/apiErrorHandler';
 import { badRequest, created, ok } from '@/utils/nextResponse';
 
 export async function POST(req: Request) {
   try {
-    const { name } = await courseFormSchema.validate(await req.json());
+    const { name, courseId } = await disciplineFormSchema.validate(await req.json());
 
-    const exists = await prisma.course.findFirst({
+    const exists = await prisma.discipline.findFirst({
       where: {
         name: {
           contains: name,
@@ -17,16 +17,17 @@ export async function POST(req: Request) {
     });
 
     if (exists) {
-      return badRequest('Curso já cadastrado');
+      return badRequest('Disciplina já cadastrada');
     }
 
-    const course = await prisma.course.create({
+    const discipline = await prisma.discipline.create({
       data: {
         name,
+        courseId,
       },
     });
 
-    return created(course, 'course');
+    return created(discipline, 'discipline');
   } catch (error) {
     return apiErrorHandler(error);
   }
@@ -37,7 +38,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const name = searchParams.get('name') || '';
 
-    const courses = await prisma.course.findMany({
+    const disciplines = await prisma.discipline.findMany({
       where: {
         name: {
           contains: name,
@@ -50,7 +51,7 @@ export async function GET(req: Request) {
       },
     });
 
-    return ok(courses, 'courses');
+    return ok(disciplines, 'disciplines');
   } catch (error) {
     return apiErrorHandler(error);
   }

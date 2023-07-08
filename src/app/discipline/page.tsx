@@ -7,12 +7,16 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { DisciplineForm, disciplineFormSchema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { handleApiError } from '@/utils/handleApiError';
+import { notify } from '@/utils/toast';
+import { createDiscipline } from '@/services/disciplines';
+import { useRouter } from 'next/navigation';
 
 export default function Discipline() {
+  const router = useRouter();
   const [courses, setCourses] = React.useState<ICourse[]>([]);
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -20,9 +24,15 @@ export default function Discipline() {
     resolver: yupResolver(disciplineFormSchema),
   });
 
-  console.log(errors);
-
-  const onSubmit: SubmitHandler<DisciplineForm> = data => console.log(data);
+  const onSubmit: SubmitHandler<DisciplineForm> = async ({ courseId, name }) => {
+    try {
+      await createDiscipline(name, courseId);
+      notify.success('Curso cadastrado com sucesso!');
+    } catch (error) {
+      handleApiError(error);
+    }
+    router.push('/discipline');
+  };
 
   const onFetchCourses = async (name: string) => {
     const fetchedCourses = await getCourses(name);
@@ -53,7 +63,14 @@ export default function Discipline() {
           Não encontrou o curso? <br />
           Cadastre aqui
         </a>
-        <Input className="w-full" errors={errors} label="Descrição" name="name" control={control} required />
+        <Input
+          className="w-full"
+          errors={errors}
+          label="Nome da disciplina"
+          name="name"
+          control={control}
+          required
+        />
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-100 w-full"
           type="submit">
