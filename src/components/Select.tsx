@@ -47,7 +47,6 @@ export const Select = <T extends Record<string, unknown>, Fields extends FieldVa
     className,
     required,
     control,
-    error,
     options,
     defaultOptions = options,
     disabled,
@@ -69,7 +68,10 @@ export const Select = <T extends Record<string, unknown>, Fields extends FieldVa
     isSearchable = false,
   } = props;
 
-  const { field } = useController({ name, control, shouldUnregister });
+  const {
+    field,
+    fieldState: { error },
+  } = useController({ name, control, shouldUnregister });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onLoadOptions = React.useCallback(
@@ -94,7 +96,7 @@ export const Select = <T extends Record<string, unknown>, Fields extends FieldVa
     <div className={`flex flex-col w-full ${className}`}>
       {!!label && typeof label === 'string' ? (
         <label className="input-label">
-          {required && <span className="mt-2 text-red-500">*</span>}
+          {required && <span className="mt-2 mr-1 text-red-500">*</span>}
           {label}
         </label>
       ) : (

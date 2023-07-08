@@ -5,7 +5,8 @@ import { ICourse } from '@/interfaces/ICourse';
 import { getCourses } from '@/services/courses';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { DisciplineForm } from './schema';
+import { DisciplineForm, disciplineFormSchema } from './schema';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 export default function Discipline() {
   const [courses, setCourses] = React.useState<ICourse[]>([]);
@@ -15,7 +16,11 @@ export default function Discipline() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<DisciplineForm>();
+  } = useForm<DisciplineForm>({
+    resolver: yupResolver(disciplineFormSchema),
+  });
+
+  console.log(errors);
 
   const onSubmit: SubmitHandler<DisciplineForm> = data => console.log(data);
 
@@ -48,14 +53,12 @@ export default function Discipline() {
           Não encontrou o curso? <br />
           Cadastre aqui
         </a>
-        <Input
-          className="w-full"
-          errors={errors}
-          label="Descrição"
-          name="description"
-          register={register}
-          required
-        />
+        <Input className="w-full" errors={errors} label="Descrição" name="name" control={control} required />
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-100 w-full"
+          type="submit">
+          Cadastrar
+        </button>
       </form>
     </main>
   );

@@ -1,40 +1,50 @@
-type InputProps = {
+import { Control, FieldValues, Path, useController } from 'react-hook-form';
+
+interface InputProps<Fields extends FieldValues> {
   label: string;
-  name: string;
-  register: any;
+  control: Control<Fields, unknown>;
+  name: Path<Fields>;
   required?: boolean;
-  errors: any;
   type?: 'text' | 'number' | 'textarea';
   className?: string;
+  shouldUnregister?: boolean;
   [key: string]: any;
-};
+}
 
-export const Input = ({
+export const Input = <Fields extends FieldValues>({
   label,
   name,
-  register,
+  control,
   required,
-  errors,
   type = 'text',
   className,
+  shouldUnregister,
   ...rest
-}: InputProps) => {
+}: InputProps<Fields>) => {
   const InputType = type === 'textarea' ? 'textarea' : 'input';
 
   if (type === 'number') {
     rest.type = 'number';
   }
 
+  const {
+    fieldState: { error },
+    field,
+  } = useController({ name, control, shouldUnregister });
+
   return (
     <div className={`flex flex-col ${className}`}>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={name}>
+        {required && <span className="mt-2 mr-1 text-red-500">*</span>}
+        {label}
+      </label>
       <InputType
         id={name}
         className="border border-gray-300 rounded-md p-2 focus-visible:outline-0 focus-visible:ring-2 focus-visible:ring-blue-500"
-        {...register(name, { required })}
+        {...field}
         {...rest}
       />
-      {errors[name]?.message && <span className="text-red-500">{errors[name]?.message as string}</span>}
+      {error?.message && <span className="text-red-500">{error?.message as string}</span>}
     </div>
   );
 };
