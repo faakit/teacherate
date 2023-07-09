@@ -85,7 +85,7 @@ export async function POST(req: Request) {
     const teacher = await prisma.teacher.create({
       data: {
         name,
-        meanRating: 0,
+        ratingsSum: 0,
         ratingsCount: 0,
         disciplines: {
           create: {

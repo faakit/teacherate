@@ -30,6 +30,9 @@ export async function GET(req: Request) {
           },
         },
       },
+      include: {
+        disciplines: true,
+      },
       take: 10,
       orderBy: {
         name: 'asc',

@@ -3,15 +3,17 @@ import { Input } from '@/components/Input';
 import { Select } from '@/components/Select';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FeedbackForm, feedbackFormSchema } from './schema';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 export default function Feedback() {
   const {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<FeedbackForm>({
-    resolver: feedbackFormSchema,
+    resolver: yupResolver(feedbackFormSchema),
   });
 
   const onSubmit: SubmitHandler<FeedbackForm> = data => console.log(data);
@@ -27,11 +29,10 @@ export default function Feedback() {
       <form className="flex flex-col items-center justify-center gap-3" onSubmit={handleSubmit(onSubmit)}>
         <Select
           className="w-full"
-          errors={errors}
           label="Docente"
           name="teacherId"
           options={selectOptions}
-          register={register}
+          control={control}
           required
         />
         <a
@@ -46,7 +47,7 @@ export default function Feedback() {
           errors={errors}
           label="Descrição"
           name="description"
-          register={register}
+          control={control}
           required
         />
       </form>

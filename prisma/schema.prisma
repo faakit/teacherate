@@ -39,7 +39,7 @@ model Teacher {
   id              Int    @id @default(autoincrement())
   name            String
 
-  meanRating      Float
+  ratingsSum      Int
   ratingsCount    Int
 
   disciplines      TeachersOnDisciplines[]

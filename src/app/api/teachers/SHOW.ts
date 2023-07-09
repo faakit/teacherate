@@ -10,6 +10,10 @@ export async function GET(req: Request, { id }: { id: string }) {
           equals: Number(id),
         },
       },
+      include: {
+        disciplines: true,
+        ratings: true,
+      },
     });
 
     return ok(teacher, 'teacher');

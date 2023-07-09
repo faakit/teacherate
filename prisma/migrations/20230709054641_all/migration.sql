@@ -21,10 +21,20 @@ CREATE TABLE "Discipline" (
 CREATE TABLE "Teacher" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "disciplineId" INTEGER NOT NULL,
+    "ratingsSum" INTEGER NOT NULL,
+    "ratingsCount" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Teacher_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TeachersOnDisciplines" (
+    "teacherId" INTEGER NOT NULL,
+    "disciplineId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TeachersOnDisciplines_pkey" PRIMARY KEY ("teacherId","disciplineId")
 );
 
 -- CreateTable
@@ -45,7 +55,10 @@ CREATE TABLE "Rating" (
 ALTER TABLE "Discipline" ADD CONSTRAINT "Discipline_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Teacher" ADD CONSTRAINT "Teacher_disciplineId_fkey" FOREIGN KEY ("disciplineId") REFERENCES "Discipline"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TeachersOnDisciplines" ADD CONSTRAINT "TeachersOnDisciplines_teacherId_fkey" FOREIGN KEY ("teacherId") REFERENCES "Teacher"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TeachersOnDisciplines" ADD CONSTRAINT "TeachersOnDisciplines_disciplineId_fkey" FOREIGN KEY ("disciplineId") REFERENCES "Discipline"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Rating" ADD CONSTRAINT "Rating_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
