@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         return badRequest('Este professor já está cadastrado nesta disciplina.');
       }
 
-      const teacherDiscipline = await prisma.teachersOnDisciplines.create({
+      await prisma.teachersOnDisciplines.create({
         data: {
           teacherId,
           disciplineId,
@@ -60,6 +60,26 @@ export async function POST(req: Request) {
       });
 
       return created(teacherExists, 'teacher');
+    }
+
+    const alreadyExists = await prisma.teacher.findFirst({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+        disciplines: {
+          some: {
+            disciplineId: {
+              equals: disciplineId,
+            },
+          },
+        },
+      },
+    });
+
+    if (alreadyExists) {
+      return badRequest('Este professor já está cadastrado nesta disciplina.');
     }
 
     const teacher = await prisma.teacher.create({
