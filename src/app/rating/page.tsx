@@ -14,6 +14,7 @@ import { createRating } from '@/services/ratings';
 import { ITeacher } from '@/interfaces/ITeacher';
 import { IDiscipline } from '@/interfaces/IDiscipline';
 import { listTeachers } from '@/services/teachers';
+import { RatingStars } from '@/components/RatingStars';
 
 export default function Feedback() {
   const [courses, setCourses] = React.useState<ICourse[]>([]);
@@ -30,7 +31,7 @@ export default function Feedback() {
 
   const onSubmit: SubmitHandler<RatingForm> = async params => {
     try {
-      await createRating(params);
+      // await createRating(params);
       notify.success('Feedback cadastrado com sucesso!');
     } catch (error) {
       handleApiError(error);
@@ -69,6 +70,8 @@ export default function Feedback() {
   React.useEffect(() => {
     isDisciplineSelected && onFetchTeachers('');
   }, [isDisciplineSelected, onFetchTeachers]);
+
+  console.log(watch());
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">
@@ -120,7 +123,7 @@ export default function Feedback() {
           <>
             <Select
               label="Professor"
-              name="disciplineId"
+              name="teacherId"
               options={teachers as any}
               control={control}
               valueAs="id"
@@ -141,9 +144,12 @@ export default function Feedback() {
         )}
         {isTeacherSelected && (
           <>
-            {
-              //todo add rating component
-            }
+            <RatingStars name="value" control={control} label="Avaliação" size="4" required />
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-100 w-full"
+              type="submit">
+              Cadastrar
+            </button>
           </>
         )}
       </form>

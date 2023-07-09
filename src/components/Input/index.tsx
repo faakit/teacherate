@@ -1,6 +1,6 @@
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 
-interface InputProps<Fields extends FieldValues> {
+interface InputProps<T extends Record<string, unknown>, Fields extends FieldValues> {
   label: string;
   control: Control<Fields, unknown>;
   name: Path<Fields>;
@@ -11,7 +11,7 @@ interface InputProps<Fields extends FieldValues> {
   [key: string]: any;
 }
 
-export const Input = <Fields extends FieldValues>({
+export const Input = <T extends Record<string, unknown>, Fields extends FieldValues>({
   label,
   name,
   control,
@@ -20,7 +20,7 @@ export const Input = <Fields extends FieldValues>({
   className,
   shouldUnregister,
   ...rest
-}: InputProps<Fields>) => {
+}: InputProps<T, Fields>) => {
   const InputType = type === 'textarea' ? 'textarea' : 'input';
 
   if (type === 'number') {

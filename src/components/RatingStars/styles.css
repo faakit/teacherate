@@ -1,0 +1,23 @@
+.rating {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  text-align: center;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  display: inline-block;
+  color: gray;
+  cursor: pointer;
+}
+
+.rating label:before {
+  content: '\2605';
+}
+
+.rating input:checked ~ label {
+  color: gold;
+}
