@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         },
       });
 
-      return created(teacherDiscipline, 'teacher');
+      return created(teacherExists, 'teacher');
     }
 
     const teacher = await prisma.teacher.create({
@@ -67,18 +67,17 @@ export async function POST(req: Request) {
         name,
         meanRating: 0,
         ratingsCount: 0,
+        disciplines: {
+          create: {
+            disciplineId,
+          },
+        },
       },
     });
 
-    const teacherDiscipline = await prisma.teachersOnDisciplines.create({
-      data: {
-        teacherId: teacher.id,
-        disciplineId,
-      },
-    });
-
-    return created(teacherDiscipline, 'teacher');
+    return created(teacher, 'teacher');
   } catch (error) {
+    console.log(error);
     return apiErrorHandler(error);
   }
 }

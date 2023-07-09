@@ -3,7 +3,7 @@ import { Input } from '@/components/Input';
 import { Select } from '@/components/Select';
 import { ICourse } from '@/interfaces/ICourse';
 import { getCourses } from '@/services/courses';
-import { createDiscipline, getDisciplines } from '@/services/disciplines';
+import { getDisciplines } from '@/services/disciplines';
 import { handleApiError } from '@/utils/handleApiError';
 import { notify } from '@/utils/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { TeacherForm, teacherFormSchema } from './schema';
+import { createTeacher } from '@/services/teachers';
 
 export default function Teacher() {
   const router = useRouter();
@@ -29,9 +30,9 @@ export default function Teacher() {
   const isCourseSelected = !!watch('courseId');
   const isDisciplineSelected = !!watch('disciplineId');
 
-  const onSubmit: SubmitHandler<TeacherForm> = async ({ courseId, name }) => {
+  const onSubmit: SubmitHandler<TeacherForm> = async params => {
     try {
-      await createDiscipline(name, courseId);
+      await createTeacher(params);
       notify.success('Professor cadastrado com sucesso!');
     } catch (error) {
       handleApiError(error);
