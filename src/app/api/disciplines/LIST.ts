@@ -4,7 +4,7 @@ import { ok } from '@/utils/nextResponse';
 import * as Yup from 'yup';
 
 const queryParams = Yup.object().shape({
-  name: Yup.string().required(),
+  name: Yup.string().optional(),
   courseId: Yup.number().required(),
 });
 

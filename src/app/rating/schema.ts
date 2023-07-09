@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { yupSchemaTexts } from '@/utils/yupSchemaTexts';
 
-export type FeedbackForm = {
+export type RatingForm = {
   teacherId: number;
   courseId: number;
   disciplineId: number;
@@ -10,7 +10,7 @@ export type FeedbackForm = {
   value: number;
 };
 
-export const feedbackFormSchema = yup.object().shape({
+export const ratingFormSchema = yup.object().shape({
   teacherId: yup.number().typeError(yupSchemaTexts.required).required(yupSchemaTexts.required),
   courseId: yup.number().typeError(yupSchemaTexts.required).required(yupSchemaTexts.required),
   disciplineId: yup.number().typeError(yupSchemaTexts.required).required(yupSchemaTexts.required),
@@ -18,8 +18,8 @@ export const feedbackFormSchema = yup.object().shape({
     .string()
     .typeError(yupSchemaTexts.string)
     .test('ratingSemester', value => {
-      // TODO - Validate if the semester is valid
-      return true;
+      const regex = new RegExp('^d{4}/[12]$');
+      return regex.test(value as string);
     })
     .required(yupSchemaTexts.required),
   description: yup.string().typeError(yupSchemaTexts.string).required(yupSchemaTexts.required),

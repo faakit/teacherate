@@ -1,4 +1,4 @@
-import { feedbackFormSchema } from '@/app/feedback/schema';
+import { ratingFormSchema } from '@/app/rating/schema';
 import prisma from '@/lib/prisma';
 import { apiErrorHandler } from '@/utils/apiErrorHandler';
 import { badRequest, created } from '@/utils/nextResponse';
@@ -6,7 +6,7 @@ import { badRequest, created } from '@/utils/nextResponse';
 export async function POST(req: Request) {
   try {
     const { courseId, disciplineId, teacherId, description, ratingSemester, value } =
-      await feedbackFormSchema.validate(await req.json(), {
+      await ratingFormSchema.validate(await req.json(), {
         stripUnknown: true,
       });
 

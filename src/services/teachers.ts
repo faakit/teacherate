@@ -9,6 +9,11 @@ type CreateTeacherParams = {
   teacherId: number | undefined;
 };
 
+type ListTeachersParams = {
+  name: string;
+  disciplineId: number;
+};
+
 export const createTeacher = async ({
   name,
   disciplineId,
@@ -23,4 +28,12 @@ export const createTeacher = async ({
   });
 
   return data.teacher;
+};
+
+export const listTeachers = async (params: ListTeachersParams): Promise<ITeacher[]> => {
+  const { data } = await axios.get<IResponse<ITeacher[], 'teachers'>>('http://localhost:3000/api/teachers', {
+    params,
+  });
+
+  return data.teachers;
 };
