@@ -5,7 +5,7 @@ import { badRequest, created, ok } from '@/utils/nextResponse';
 
 export async function POST(req: Request) {
   try {
-    const { name } = await courseFormSchema.validate(await req.json());
+    const { name } = await courseFormSchema.validate(await req.json(), { stripUnknown: true });
 
     const exists = await prisma.course.findFirst({
       where: {

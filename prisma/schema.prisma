@@ -28,7 +28,7 @@ model Discipline {
   course          Course @relation(fields: [courseId], references: [id])
   courseId        Int
 
-  teachers        Teacher[]
+  teachers        TeachersOnDisciplines[]
 
   ratings         Rating[]
 
@@ -42,12 +42,23 @@ model Teacher {
   meanRating      Float
   ratingsCount    Int
 
-  discipline      Discipline @relation(fields: [disciplineId], references: [id])
-  disciplineId    Int
+  disciplines      TeachersOnDisciplines[]
 
   ratings         Rating[]
 
   createdAt       DateTime @default(now())
+}
+
+model TeachersOnDisciplines {
+  teacher         Teacher @relation(fields: [teacherId], references: [id])
+  teacherId       Int
+
+  discipline      Discipline @relation(fields: [disciplineId], references: [id])
+  disciplineId    Int
+
+  createdAt       DateTime @default(now())
+
+  @@id([teacherId, disciplineId])
 }
 
 model Rating {
